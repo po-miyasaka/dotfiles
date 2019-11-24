@@ -93,8 +93,7 @@ function lscd () {
   TMP=$(ls -a -r)
   TMP="$TMP\n$(cat ~/.powered_cd.log)"
   TMP=$(echo -e "$TMP" | peco --query "$LBUFFER")
-  BUFFER="cd $TMP"
-  CURSOR=$#BUFFER
+  cd "$TMP"
   zle redisplay
 }
 zle -N lscd
