@@ -18,7 +18,7 @@ setupDotFiles () {
         if [[ $f = ".gitignore" ]]; then continue; fi 
         if [[ $f = "setup.sh" ]]; then continue; fi 
         if [[ $f = ".git" ]]; then continue; fi 
-        if [[ $f = ".gitconfigbk" ]]; then　mv "$HOME/dotfiles/$f" "$HOME/.gitconfig"; fi 
+        if [[ $f = ".gitconfigbk" ]]; then　cp "$HOME/dotfiles/$f" "$HOME/.gitconfig"; fi 
 
         ln -sf "$HOME/dotfiles/$f" "$HOME/$f"
     done
