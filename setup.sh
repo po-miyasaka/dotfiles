@@ -1,8 +1,7 @@
 PWD="$PWD"
-
+cd `dirname $0`
 for f in  `echo .*`;
 do
-
     if [[ $f = "." ]]; then continue ;fi
     if [[ $f = ".." ]]; then continue; fi
     if [[ $f = ".DS_Store" ]]; then continue; fi 
@@ -16,4 +15,4 @@ do
     ln -sf "$HOME/dotfiles/$f" "$HOME/$f"
 done
 
- 
+source "$HOME/.zprofile"
