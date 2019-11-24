@@ -1,3 +1,5 @@
+# !/usr/local/bin/zsh
+
 PWD="$PWD"
 
 for f in  `echo .*`;
@@ -16,4 +18,5 @@ do
     ln -sf "$HOME/dotfiles/$f" "$HOME/$f"
 done
 
+source "$HOME/.zprofile"
  
