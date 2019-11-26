@@ -110,3 +110,7 @@ chpwd () {
 [ -e ~/.powered_cd.log ] || touch ~/.powered_cd.log; chmod 777 ~/.powered_cd.log
 
 setopt auto_cd
+
+# ls
+alias ls='ls -GFf'
+alias ll='ls -GoFf'
