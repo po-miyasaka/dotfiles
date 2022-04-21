@@ -125,3 +125,5 @@ PROMPT="
 %F{green}%~/%f 
 ▶ "
 fpath=(/usr/local/share/zsh-completions $fpath)
+eval "$(rbenv init -)"
+
