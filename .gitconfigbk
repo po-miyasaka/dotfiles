@@ -1,7 +1,0 @@
-[user]
-	email = miyasaka@yahoo.co.jp
-[ghq]
-	root = ~/dev
-
-[ghq "CODECOMMIT-URL"]
-  vcs = git
