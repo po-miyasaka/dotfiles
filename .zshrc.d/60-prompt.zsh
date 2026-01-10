@@ -11,14 +11,14 @@ function __dotfiles_prompt_git() {
   fi
 
   local status
-  status=$(command git status --porcelain --ignore-submodules=dirty 2>/dev/null)
+  git_status=$(command git status --porcelain --ignore-submodules=dirty 2>/dev/null)
 
   if [[ -z ${status} ]]; then
     printf '%%F{green}[%s]%%f' "${branch}"
     return
   fi
 
-  if printf '%s\n' "${status}" | grep -q '^??'; then
+  if printf '%s\n' "${git_status}" | grep -q '^??'; then
     printf '%%F{red}[%s]%%f' "${branch}"
   else
     printf '%%F{yellow}[%s]%%f' "${branch}"
