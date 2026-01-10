@@ -1,17 +1,17 @@
 # 履歴ビューのデフォルト（fzfが無い場合のフォールバック）
 function his() {
-  fc -rl 1
+  fc -rln 1
 }
 
 # fzf / ghq を使ったウィジェット類
 if command -v fzf >/dev/null 2>&1; then
   function his() {
-    fc -rl 1 | fzf "$@"
+    fc -rln 1 | fzf "$@"
   }
 
   function __dotfiles_widget_history() {
     local selected
-    selected=$(fc -rl 1 | uniq | fzf --query "$LBUFFER") || return
+    selected=$(fc -rln 1 | uniq | fzf --query "$LBUFFER") || return
     BUFFER=${selected}
     CURSOR=${#BUFFER}
     zle redisplay
