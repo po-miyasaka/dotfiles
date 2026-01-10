@@ -1,4 +1,3 @@
-# プロンプト
 setopt prompt_subst
 
 function __dotfiles_prompt_git() {
@@ -13,7 +12,7 @@ function __dotfiles_prompt_git() {
   local status
   git_status=$(command git status --porcelain --ignore-submodules=dirty 2>/dev/null)
 
-  if [[ -z ${status} ]]; then
+  if [[ -z ${git_status} ]]; then
     printf '%%F{green}[%s]%%f' "${branch}"
     return
   fi

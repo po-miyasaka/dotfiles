@@ -1,6 +1,5 @@
 [[ -o interactive ]] || return
 
-# モジュールのロード設定
 typeset -g DOTFILES_ZSH_DIR="${HOME}/.zshrc.d"
 [[ -d "${DOTFILES_ZSH_DIR}" ]] || mkdir -p "${DOTFILES_ZSH_DIR}"
 
