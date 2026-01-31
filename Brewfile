@@ -4,5 +4,8 @@ brew "pyenv"
 brew "ghq"
 brew "zoxide"
 brew "fzf"
+brew "xcodes"
+brew "uv"
+brew "tailscale"
 
 cask "google-chrome"

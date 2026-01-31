@@ -67,3 +67,5 @@ typeset -gx POWERED_CD_LOG="${DOTFILES_STATE_DIR}/powered_cd.log"
 mkdir -p "${POWERED_CD_LOG:h}"
 [[ -f "${POWERED_CD_LOG}" ]] || : > "${POWERED_CD_LOG}"
 chmod 600 "${POWERED_CD_LOG}" 2>/dev/null
+
+export PATH="$PATH:$HOME/.lmstudio/bin"
