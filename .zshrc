@@ -9,5 +9,3 @@ for dotfiles_module in "${DOTFILES_ZSH_DIR}"/[0-9][0-9]-*.zsh; do
 done
 
 unset dotfiles_module
-
-

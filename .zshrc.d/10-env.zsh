@@ -62,10 +62,14 @@ if command -v ssh-add >/dev/null 2>&1; then
   unset -f __dotfiles_add_default_ssh_key
 fi
 
+# ~/.local/bin (Claude Code, etc.)
+[[ -d "${HOME}/.local/bin" ]] && path=("${HOME}/.local/bin" ${path})
+
+# LM Studio CLI
+[[ -d "${HOME}/.lmstudio/bin" ]] && path+="${HOME}/.lmstudio/bin"
+
 # powered_cd 用のログファイルを安全に用意
 typeset -gx POWERED_CD_LOG="${DOTFILES_STATE_DIR}/powered_cd.log"
 mkdir -p "${POWERED_CD_LOG:h}"
 [[ -f "${POWERED_CD_LOG}" ]] || : > "${POWERED_CD_LOG}"
 chmod 600 "${POWERED_CD_LOG}" 2>/dev/null
-
-export PATH="$PATH:$HOME/.lmstudio/bin"

@@ -7,5 +7,8 @@ brew "fzf"
 brew "xcodes"
 brew "uv"
 brew "tailscale"
+brew "tmux"
+brew "ttyd"
+brew "gh"
 
 cask "google-chrome"
