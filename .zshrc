@@ -15,3 +15,4 @@ export PATH="$PATH:/Users/miyasaka_kazutoshi/.lmstudio/bin"
 # End of LM Studio CLI section
 
 export NETLIFY_PERSONAL_ACCESS_TOKEN=$(security find-generic-password -a netlify -s NETLIFY_PERSONAL_ACCESS_TOKEN -w 2>/dev/null)
+export MATCH_PASSWORD=$(security find-generic-password -a match -s MATCH_PASSWORD -w 2>/dev/null)
