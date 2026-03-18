@@ -11,7 +11,7 @@ if command -v fzf >/dev/null 2>&1; then
 
   function __dotfiles_widget_history() {
     local selected
-    selected=$(fc -rln 1 | uniq | fzf --query "$LBUFFER") || return
+    selected=$(fc -rln 1 | awk '!seen[$0]++' | fzf --no-sort --query "$LBUFFER") || return
     BUFFER=${selected}
     CURSOR=${#BUFFER}
     zle redisplay

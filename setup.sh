@@ -48,6 +48,26 @@ function setup_dotfiles() {
             cp "${repo_root}/.gitconfigbk" "${HOME}/.gitconfig"
         fi
     fi
+
+    # .config 以下のネストしたファイルをシンボリックリンク
+    if [[ -d "${repo_root}/.config" ]]; then
+        find "${repo_root}/.config" -type f | while IFS= read -r src; do
+            local rel="${src#${repo_root}/}"
+            dst="${HOME}/${rel}"
+            mkdir -p "$(dirname "${dst}")"
+            if [[ -L "${dst}" ]]; then
+                if [[ "$(readlink "${dst}")" == "${src}" ]]; then
+                    continue
+                fi
+                rm -f "${dst}"
+            elif [[ -e "${dst}" ]]; then
+                local backup="${dst}.backup.$(date +%Y%m%d%H%M%S)"
+                echo "既存の ${dst} を ${backup} に退避します" >&2
+                mv "${dst}" "${backup}"
+            fi
+            ln -s "${src}" "${dst}"
+        done
+    fi
 }
 
 function main() {
