@@ -1,31 +1,80 @@
-PWD="$PWD"
-cd `dirname $0`
-set -e
+#!/usr/bin/env zsh
 
-downloadTools () {
-    if [[ ! $+commands[brew] ]]; then 
-        echo brew入れてくれ
-        exit 0
+set -euo pipefail
+
+repo_root=$(cd "$(dirname "$0")" && pwd)
+
+function ensure_homebrew() {
+    if [[ ! $+commands[brew] ]]; then
+        echo "Homebrew が見つかりません。https://brew.sh/ を参照してインストールしてください" >&2
+        exit 1
     fi
 }
 
-setupDotFiles () {
-    for f in  `echo .*`;
-    do
-        if [[ $f = "." ]]; then continue; fi
-        if [[ $f = ".." ]]; then continue; fi
-        if [[ $f = ".DS_Store" ]]; then continue; fi 
-        if [[ $f = ".gitignore" ]]; then continue; fi 
-        if [[ $f = "setup.sh" ]]; then continue; fi 
-        if [[ $f = ".git" ]]; then continue; fi 
-        if [[ $f = ".gitconfigbk"  ]] ; then 
-            cp "$HOME/dotfiles/$f" "$HOME/.gitconfig"
-            continue
-        fi 
-
-        ln -sf "$HOME/dotfiles/$f" "$HOME/$f"
-    done
+function install_brew_bundle() {
+    if [[ ! -f "${repo_root}/Brewfile" ]]; then
+        echo "Brewfile が見つかりません: ${repo_root}/Brewfile" >&2
+        exit 1
+    fi
+    brew bundle --file="${repo_root}/Brewfile"
 }
 
-downloadTools
-setupDotFiles
+function setup_dotfiles() {
+    local src dst
+    for src in "${repo_root}"/.*; do
+        case "${src##*/}" in
+            .|..|.git|.DS_Store|.gitignore|.gitconfigbk|setup.sh|Brewfile|Brewfile.lock.json)
+                continue
+                ;;
+        esac
+        dst="${HOME}/${src##*/}"
+        if [[ -L "${dst}" ]]; then
+            if [[ "$(readlink "${dst}")" == "${src}" ]]; then
+                continue
+            fi
+            rm -f "${dst}"
+        elif [[ -e "${dst}" ]]; then
+            local backup="${dst}.backup.$(date +%Y%m%d%H%M%S)"
+            echo "既存の ${dst} を ${backup} に退避します" >&2
+            mv "${dst}" "${backup}"
+        fi
+        ln -s "${src}" "${dst}"
+    done
+
+    if [[ -f "${repo_root}/.gitconfigbk" ]]; then
+        if [[ -e "${HOME}/.gitconfig" ]]; then
+            echo "${HOME}/.gitconfig が存在するため .gitconfigbk のコピーをスキップしました" >&2
+        else
+            cp "${repo_root}/.gitconfigbk" "${HOME}/.gitconfig"
+        fi
+    fi
+
+    # .config 以下のネストしたファイルをシンボリックリンク
+    if [[ -d "${repo_root}/.config" ]]; then
+        find "${repo_root}/.config" -type f | while IFS= read -r src; do
+            local rel="${src#${repo_root}/}"
+            dst="${HOME}/${rel}"
+            mkdir -p "$(dirname "${dst}")"
+            if [[ -L "${dst}" ]]; then
+                if [[ "$(readlink "${dst}")" == "${src}" ]]; then
+                    continue
+                fi
+                rm -f "${dst}"
+            elif [[ -e "${dst}" ]]; then
+                local backup="${dst}.backup.$(date +%Y%m%d%H%M%S)"
+                echo "既存の ${dst} を ${backup} に退避します" >&2
+                mv "${dst}" "${backup}"
+            fi
+            ln -s "${src}" "${dst}"
+        done
+    fi
+}
+
+function main() {
+    ensure_homebrew
+    install_brew_bundle
+    setup_dotfiles
+    echo "dotfiles 設定が完了しました。新しいシェルを開いて動作を確認してください。"
+}
+
+main "$@"
